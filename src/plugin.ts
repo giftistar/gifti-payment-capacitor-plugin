@@ -7,7 +7,7 @@ import {
   CertificationOptions,
 } from './definitions';
 
-const { IamportCapacitor, Device } = Plugins;
+const { IamportCapacitor } = Plugins;
 
 const REDIRECT_URL = 'http://localhost/iamport';
 
@@ -23,7 +23,9 @@ export class GiftyPayment implements IamportCapacitorPlugin {
     }`;
 
   addListener(callback: any, type?: String) {
-    IamportCapacitor.addListener('IMPOver', async ({ url }: any) => {
+    callback
+    type;
+    (IamportCapacitor as any).addListener('IMPOver', async ({ url }: any) => {
 
       if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
         console.log('IMPOVER listen', url)
@@ -46,7 +48,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
       redirectUrl: REDIRECT_URL,
     };
     this.addListener(callback, type);
-    return IamportCapacitor.startIamportActivity(newOptions);
+    return (IamportCapacitor as any).startIamportActivity(newOptions);
   }
 
   getPaymentType(data: PaymentData): String {
@@ -74,6 +76,6 @@ export class GiftyPayment implements IamportCapacitorPlugin {
     };
     this.addListener(callback);
 
-    return IamportCapacitor.startIamportActivity(newOptions);
+    return (IamportCapacitor as any).startIamportActivity(newOptions);
   }
 }
