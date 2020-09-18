@@ -9,7 +9,7 @@ import {
 
 const { IamportCapacitor } = Plugins;
 
-const REDIRECT_URL = 'http://localhost/iamport';
+const REDIRECT_URL = 'https://danal.giftistar.net';
 
 export class GiftyPayment implements IamportCapacitorPlugin {
   private isCallbackCalled: boolean = false;
@@ -34,6 +34,10 @@ export class GiftyPayment implements IamportCapacitorPlugin {
     });
   }
 
+  //순서를 적어놓자면 
+  // 앱에서는 payment 메소드를 호출한다. 
+  // payment는 다시 브릿지를 통해 플러그인을 호출한다. 
+  // 호출대상은 plugin.swift 파일이다. 
   payment(options: PaymentOptions): Promise<PaymentOptions> {
     const { userCode, data, callback } = options;
     const type = this.getPaymentType(data);
