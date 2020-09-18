@@ -11,40 +11,22 @@ const { IamportCapacitor, Device } = Plugins;
 
 const REDIRECT_URL = 'http://localhost/iamport';
 
-export class IMP implements IamportCapacitorPlugin {
-  private isCallbackCalled: boolean = false;       
+export class GiftyPayment implements IamportCapacitorPlugin {
+  private isCallbackCalled: boolean = false;
   private triggerCallback: string = `function(response) {
       const query = [];
       Object.keys(response).forEach(key => {
         query.push(key + '=' + response[key]);
       });
 
-      location.href = 'http://localhost/iamport?' + query.join('&');
-    }`;         
+      location.href = 'https://danal.giftistar.net';
+    }`;
 
   addListener(callback: any, type?: String) {
     IamportCapacitor.addListener('IMPOver', async ({ url }: any) => {
 
       if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
-        const { platform } = await Device.getInfo();
-        if (platform === 'ios' && type === 'inicis') {
-          /** 
-           * IOS && 이니시스 && 실시간 계좌이체 예외처리
-           * 리디렉션 URL: io.ionic.starter://?imp_uid=imp_048747651691%26merchant_uid=mid_1573712730635%26m_redirect_url=http%3A%2F%2Flocalhost%2Fiamport%3Fimp_uid%3Dimp_048747651691%26merchant_uid%3Dmid_15737127306352
-          */
-          const decodedUrl = decodeURIComponent(url);
-          const extractedQuery = queryString.extract(decodedUrl);
-          const parsedQuery = queryString.parse(extractedQuery);
-          const { imp_uid, merchant_uid } = parsedQuery;
-          const query = {
-            imp_uid,
-            merchant_uid: typeof merchant_uid === 'object' ? merchant_uid[0] : merchant_uid,
-          };
-          callback(query);
-        } else {
-          const { query } = queryString.parseUrl(url);
-          callback(query);
-        }
+        console.log('IMPOVER listen', url)
         this.isCallbackCalled = true;
       }
     });

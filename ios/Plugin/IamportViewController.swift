@@ -24,6 +24,9 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     convenience init(call: CAPPluginCall) {
         self.init()
         
+        print("call",call)
+
+
         NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil)
         
         self.userCode = call.getString("userCode") ?? "iamport"
