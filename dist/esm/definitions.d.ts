@@ -4,7 +4,7 @@ declare module "@capacitor/core" {
     }
 }
 export interface IamportCapacitorPlugin {
-    payment(options: PaymentOptions): Promise<PaymentOptions>;
+    payment(options: any): Promise<any>;
     certification(options: CertificationOptions): Promise<CertificationOptions>;
 }
 export declare type Pg = 'html5_inicis' | 'kcp' | 'kcp_billing' | 'uplus' | 'jtnet' | 'nice' | 'kakaopay' | 'kakao' | 'danal' | 'danal_tpay' | 'kicc' | 'paypal' | 'mobilians' | 'payco' | 'settle' | 'naverco' | 'naverpay' | 'smilepay';

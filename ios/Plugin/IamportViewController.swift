@@ -20,7 +20,7 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     var triggerCallback: String = ""
     var redirectUrl: String!
     var loadingFinished: Bool = false
-    
+    var target_url : String = ""    
     convenience init(call: CAPPluginCall) {
         self.init()
         
@@ -38,8 +38,9 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         if (appScheme != nil) {
             self.appScheme = appScheme as! String
         }
-        self.triggerCallback = call.getString("triggerCallback") ?? ""
-        self.redirectUrl = call.getString("redirectUrl") ?? "https://danal.giftistar.net"
+        self.target_url = call.getString("target_url") ?? "https://danal.giftistar.net"
+        
+        
     }
     
     override func loadView() {
@@ -54,7 +55,7 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         super.viewDidLoad()
         
         /// 여기서 데이터들을 조합해 url 링크를 만들도록 하자. 
-        let myRequest = URLRequest(url: URL(string: "http://192.168.1.103:8211/card/Order.php?order_list_idx=6581215&callback_url=http://localhost:8100")!)
+        let myRequest = URLRequest(url: URL(string: self.target_url)!)
         webView.load(myRequest)
     }
     
@@ -86,7 +87,7 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     
     /* 종료 여부 판단 */
     func isOver(url: String) -> Bool {
-        return url.hasPrefix(self.redirectUrl);
+        return url.contains("purchase-basket-callback")  || url.contains("error")  ;
     }
     
     func isUrlStartsWithAppScheme(url : String) -> Bool {

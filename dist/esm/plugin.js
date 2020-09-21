@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Plugins } from '@capacitor/core';
 const { IamportCapacitor } = Plugins;
-const REDIRECT_URL = 'http://localhost/iamport';
+const REDIRECT_URL = 'https://danal.giftistar.net';
 export class GiftyPayment {
     constructor() {
         this.isCallbackCalled = false;
@@ -22,9 +22,7 @@ export class GiftyPayment {
       location.href = 'https://danal.giftistar.net';
     }`;
     }
-    addListener(callback, type) {
-        callback;
-        type;
+    addListener() {
         IamportCapacitor.addListener('IMPOver', ({ url }) => __awaiter(this, void 0, void 0, function* () {
             if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
                 console.log('IMPOVER listen', url);
@@ -32,17 +30,16 @@ export class GiftyPayment {
             }
         }));
     }
+    //순서를 적어놓자면 
+    // 앱에서는 payment 메소드를 호출한다. 
+    // payment는 다시 브릿지를 통해 플러그인을 호출한다. 
+    // 호출대상은 plugin.swift 파일이다. 
     payment(options) {
-        const { userCode, data, callback } = options;
-        const type = this.getPaymentType(data);
+        const { target_url, callback } = options;
         const newOptions = {
-            type,
-            userCode,
-            data: Object.assign(Object.assign({}, data), { m_redirect_url: REDIRECT_URL }),
-            triggerCallback: this.triggerCallback,
-            redirectUrl: REDIRECT_URL,
+            target_url
         };
-        this.addListener(callback, type);
+        this.addListener();
         return IamportCapacitor.startIamportActivity(newOptions);
     }
     getPaymentType(data) {
@@ -66,7 +63,7 @@ export class GiftyPayment {
             triggerCallback: this.triggerCallback,
             redirectUrl: REDIRECT_URL,
         };
-        this.addListener(callback);
+        this.addListener();
         return IamportCapacitor.startIamportActivity(newOptions);
     }
 }

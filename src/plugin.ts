@@ -22,9 +22,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
       location.href = 'https://danal.giftistar.net';
     }`;
 
-  addListener(callback: any, type?: String) {
-    callback
-    type;
+  addListener() {
     (IamportCapacitor as any).addListener('IMPOver', async ({ url }: any) => {
 
       if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
@@ -38,20 +36,12 @@ export class GiftyPayment implements IamportCapacitorPlugin {
   // 앱에서는 payment 메소드를 호출한다. 
   // payment는 다시 브릿지를 통해 플러그인을 호출한다. 
   // 호출대상은 plugin.swift 파일이다. 
-  payment(options: PaymentOptions): Promise<PaymentOptions> {
-    const { userCode, data, callback } = options;
-    const type = this.getPaymentType(data);
+  payment(options: any): Promise<any> {
+    const { target_url, callback } = options;
     const newOptions = {
-      type,
-      userCode,
-      data: {
-        ...data,
-        m_redirect_url: REDIRECT_URL,
-      },
-      triggerCallback: this.triggerCallback,
-      redirectUrl: REDIRECT_URL,
+      target_url
     };
-    this.addListener(callback, type);
+    this.addListener();
     return (IamportCapacitor as any).startIamportActivity(newOptions);
   }
 
@@ -78,7 +68,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
       triggerCallback: this.triggerCallback,
       redirectUrl: REDIRECT_URL,
     };
-    this.addListener(callback);
+    this.addListener();
 
     return (IamportCapacitor as any).startIamportActivity(newOptions);
   }
