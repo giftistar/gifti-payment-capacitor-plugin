@@ -22,12 +22,14 @@ export class GiftyPayment implements IamportCapacitorPlugin {
       location.href = 'https://danal.giftistar.net';
     }`;
 
-  addListener() {
+  addListener(callback: any) {
     (IamportCapacitor as any).addListener('IMPOver', async ({ url }: any) => {
 
       if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
+        let _url: string = url
         console.log('IMPOVER listen', url)
         this.isCallbackCalled = true;
+        callback(url);
       }
     });
   }
@@ -41,7 +43,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
     const newOptions = {
       target_url
     };
-    this.addListener();
+    this.addListener(callback);
     return (IamportCapacitor as any).startIamportActivity(newOptions);
   }
 
@@ -68,7 +70,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
       triggerCallback: this.triggerCallback,
       redirectUrl: REDIRECT_URL,
     };
-    this.addListener();
+    this.addListener(callback);
 
     return (IamportCapacitor as any).startIamportActivity(newOptions);
   }

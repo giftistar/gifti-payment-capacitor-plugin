@@ -87,7 +87,7 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     
     /* 종료 여부 판단 */
     func isOver(url: String) -> Bool {
-        return url.contains("purchase-basket-callback")  || url.contains("error")  ;
+        return url.contains("purchase-basket-callback")  || url.contains("error") || url.contains("Cancel")  ;
     }
     
     func isUrlStartsWithAppScheme(url : String) -> Bool {
