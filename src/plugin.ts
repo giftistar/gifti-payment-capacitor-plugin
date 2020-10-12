@@ -39,12 +39,17 @@ export class GiftyPayment implements IamportCapacitorPlugin {
   // payment는 다시 브릿지를 통해 플러그인을 호출한다. 
   // 호출대상은 plugin.swift 파일이다. 
   payment(options: any): Promise<any> {
-    const { target_url, callback } = options;
-    const newOptions = {
-      target_url
-    };
-    this.addListener(callback);
-    return (IamportCapacitor as any).startIamportActivity(newOptions);
+    try {
+      alert('thisfinalcheck')
+      const { target_url, callback } = options;
+      const newOptions = {
+        target_url
+      };
+      this.addListener(callback);
+      return (IamportCapacitor as any).startIamportActivity(newOptions);
+    } catch (e) {
+      alert('thisfinalcheck2' + JSON.stringify(e));
+    }
   }
 
   getPaymentType(data: PaymentData): String {
