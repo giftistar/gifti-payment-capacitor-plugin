@@ -40,7 +40,7 @@ export class GiftyPayment implements IamportCapacitorPlugin {
   // 호출대상은 plugin.swift 파일이다. 
   payment(options: any): Promise<any> {
     try {
-      alert('thisfinalcheck')
+      alert('thisfinalcheck33333')
       const { target_url, callback } = options;
       const newOptions = {
         target_url

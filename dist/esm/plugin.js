@@ -38,7 +38,7 @@ export class GiftyPayment {
     // 호출대상은 plugin.swift 파일이다. 
     payment(options) {
         try {
-            alert('thisfinalcheck');
+            alert('thisfinalcheck33333');
             const { target_url, callback } = options;
             const newOptions = {
                 target_url
