@@ -22,11 +22,13 @@ export class GiftyPayment {
       location.href = 'https://danal.giftistar.net';
     }`;
     }
-    addListener() {
+    addListener(callback) {
         IamportCapacitor.addListener('IMPOver', ({ url }) => __awaiter(this, void 0, void 0, function* () {
             if (!this.isCallbackCalled) { // 콜백 중복 호출 방지
+                let _url = url;
                 console.log('IMPOVER listen', url);
                 this.isCallbackCalled = true;
+                callback(url);
             }
         }));
     }
@@ -35,12 +37,18 @@ export class GiftyPayment {
     // payment는 다시 브릿지를 통해 플러그인을 호출한다. 
     // 호출대상은 plugin.swift 파일이다. 
     payment(options) {
-        const { target_url, callback } = options;
-        const newOptions = {
-            target_url
-        };
-        this.addListener();
-        return IamportCapacitor.startIamportActivity(newOptions);
+        try {
+            alert('thisfinalcheck');
+            const { target_url, callback } = options;
+            const newOptions = {
+                target_url
+            };
+            this.addListener(callback);
+            return IamportCapacitor.startIamportActivity(newOptions);
+        }
+        catch (e) {
+            alert('thisfinalcheck2' + JSON.stringify(e));
+        }
     }
     getPaymentType(data) {
         const { pg, pay_method } = data;
@@ -63,7 +71,7 @@ export class GiftyPayment {
             triggerCallback: this.triggerCallback,
             redirectUrl: REDIRECT_URL,
         };
-        this.addListener();
+        this.addListener(callback);
         return IamportCapacitor.startIamportActivity(newOptions);
     }
 }
