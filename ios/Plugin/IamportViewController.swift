@@ -20,10 +20,13 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     var triggerCallback: String = ""
     var redirectUrl: String!
     var loadingFinished: Bool = false
-    
+    var target_url : String = ""    
     convenience init(call: CAPPluginCall) {
         self.init()
         
+        print("call123",call)
+
+        // 여기서는 필요한 데이터를 받아오는것이다. 앱에서 옵션으로 줬던 값을 받아서 타겟 url을 만들자. 
         NotificationCenter.default.addObserver(self, selector: #selector(self.onDidReceiveData(_:)), name: Notification.Name(CAPNotifications.URLOpen.name()), object: nil)
         
         self.userCode = call.getString("userCode") ?? "iamport"
@@ -35,8 +38,9 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
         if (appScheme != nil) {
             self.appScheme = appScheme as! String
         }
-        self.triggerCallback = call.getString("triggerCallback") ?? ""
-        self.redirectUrl = call.getString("redirectUrl") ?? "http://localhost/iamport"
+        self.target_url = call.getString("target_url") ?? "https://danal.giftistar.net"
+        
+        
     }
     
     override func loadView() {
@@ -50,18 +54,18 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let iamportBundle = Bundle(for: IamportCapacitor.self)
-        let WEBVIEW_PATH = iamportBundle.url(forResource: "webview_source", withExtension: "html");
-        if WEBVIEW_PATH != nil {
-            let myRequest = URLRequest(url: WEBVIEW_PATH!)
-            webView.load(myRequest)
-        }
+        /// 여기서 데이터들을 조합해 url 링크를 만들도록 하자. 
+        let myRequest = URLRequest(url: URL(string: self.target_url)!)
+        webView.load(myRequest)
     }
     
     @available (iOS 8.0, *)
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let navigationUrl = navigationAction.request.url!
         let url = navigationUrl.absoluteString;
+
+        // 라우팅을 감지하는 듯 하다. 끝나는 거면 끝나는 동작을, 앱이라면 앱 동작을 주도록한다. 
+        // 종료와 url 만드는 정도만 하면 끝날거같다. 
         print(url);
         if (self.isOver(url: url)) {
             self.webView.stopLoading()
@@ -83,7 +87,7 @@ class IamportViewController: UIViewController, WKUIDelegate, WKNavigationDelegat
     
     /* 종료 여부 판단 */
     func isOver(url: String) -> Bool {
-        return url.hasPrefix(self.redirectUrl);
+        return url.contains("purchase-basket-callback")  || url.contains("error") || url.contains("Cancel") || url.contains("callback-toss-payments-done")   ;
     }
     
     func isUrlStartsWithAppScheme(url : String) -> Bool {

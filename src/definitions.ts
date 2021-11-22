@@ -5,7 +5,7 @@ declare module "@capacitor/core" {
 }
 
 export interface IamportCapacitorPlugin {
-  payment(options: PaymentOptions): Promise<PaymentOptions>;
+  payment(options: any): Promise<any>;
   certification(options: CertificationOptions): Promise<CertificationOptions>;
 }
 

@@ -1,6 +1,6 @@
 {
-  "name": "iamport-capacitor",
-  "version": "0.10.1",
+  "name": "gifti-payment-capacitor",
+  "version": "0.11.1",
   "description": "Capacitor plugin for Iamport",
   "main": "dist/esm/index.js",
   "types": "dist/esm/index.d.ts",
@@ -11,9 +11,9 @@
     "prepublishOnly": "npm run build"
   },
   "author": {
-    "name": "Soree Choi",
-    "email": "mymusese@gmail.com",
-    "url": "https://github.com/SoleeChoi"
+    "name": "YoungTae Kim",
+    "email": "cicada0014@gmail.com",
+    "url": "https://github.com/cicada0014"
   },
   "license": "MIT",
   "dependencies": {
@@ -29,7 +29,7 @@
     "dist/",
     "ios/",
     "android/",
-    "IamportCapacitor.podspec"
+    "GiftiPaymentCapacitor.podspec"
   ],
   "keywords": [
     "capacitor",
@@ -50,9 +50,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/iamport/iamport-capacitor"
+    "url": "https://github.com/giftistar/gifti-payment-capacitor-plugin"
   },
   "bugs": {
-    "url": "https://github.com/iamport/iamport-capacitor/issues"
+    "url": "https://github.com/giftistar/gifti-payment-capacitor-plugin"
   }
 }
